@@ -153,3 +153,84 @@ export function Chat({
     </>
   );
 }
+
+
+
+
+// 'use client';
+
+// import { useState } from 'react';
+
+// export function Chat({ id, initialMessages }: { id: string; initialMessages: Array<any> }) {
+//   const [messages, setMessages] = useState(initialMessages);
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   // Funzione per inviare messaggi al backend
+//   const sendMessage = async (messageContent: string) => {
+//     const latitude = 41.9028; // Latitudine statica (es. Roma)
+//     const longitude = 12.4964; // Longitudine statica
+
+//     const newMessage = {
+//       id: `${Date.now()}`, // Genera un ID univoco per il messaggio
+//       content: messageContent,
+//       role: 'user', // Ruolo del mittente
+//     };
+
+//     // Aggiungi il messaggio dell'utente allo stato
+//     setMessages((prev) => [...prev, newMessage]);
+//     setIsLoading(true);
+
+//     try {
+//       // Chiamata al tuo endpoint
+//       const response = await fetch('https://mysterious-erika-liiist-cc9f939c.koyeb.app/message', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ message: messageContent, latitude, longitude }),
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Errore nella risposta dal backend');
+//       }
+
+//       const replyContent = await response.text();
+
+//       // Aggiungi la risposta al flusso di messaggi
+//       const replyMessage = {
+//         id: `${Date.now() + 1}`,
+//         content: replyContent,
+//         role: 'assistant', // Ruolo del modello
+//       };
+
+//       setMessages((prev) => [...prev, replyMessage]);
+//     } catch (error) {
+//       console.error('Errore durante l\'invio del messaggio:', error);
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="chat-container">
+//       <div className="messages">
+//         {messages.map((message) => (
+//           <div key={message.id} className={`message ${message.role}`}>
+//             {message.content}
+//           </div>
+//         ))}
+//         {isLoading && <div className="message assistant">Scrivendo...</div>}
+//       </div>
+//       <div className="input-bar">
+//         <input
+//           type="text"
+//           placeholder="Scrivi un messaggio..."
+//           onKeyDown={(e) => {
+//             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+//               sendMessage(e.currentTarget.value.trim());
+//               e.currentTarget.value = ''; // Pulisce l'input
+//             }
+//           }}
+//         />
+//       </div>
+//     </div>
+//   );
+// }
