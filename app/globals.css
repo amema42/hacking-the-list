@@ -11,8 +11,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 4, 49, 30; /* RGB di #04311E */
+    --background-end-rgb: 4, 49, 30;
   }
 }
 
@@ -58,43 +58,43 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
+    --background: 155 85% 10%; /* Sfondo verde scuro (#04311E) */
+    --foreground: 0 0% 98%;    /* Testo bianco */
+    --card: 155 85% 12%;       /* Leggermente più chiaro dello sfondo */
     --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
+    --popover: 155 85% 12%;
     --popover-foreground: 0 0% 98%;
-    --primary: 208.69 100% 24.18%;
-    --primary-foreground: 207 100% 96%;
-    --secondary: 240 3.7% 15.9%;
+    --primary: 155 85% 25%;    /* Colore per elementi primari */
+    --primary-foreground: 0 0% 98%;
+    --secondary: 155 85% 18%;  /* Colore per elementi secondari */
     --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
+    --muted: 155 85% 15%;      /* Colore per elementi attenuati */
+    --muted-foreground: 0 0% 80%;
+    --accent: 155 85% 20%;     /* Colore accento */
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 0 0% 100%;       /* Bordi bianchi */
+    --input: 155 85% 15%;      /* Sfondo degli input */
+    --ring: 0 0% 100%;         /* Anelli bianchi per focus */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --radius: 0.5rem;
+    --sidebar-background: 155 85% 12%; /* Sfondo della sidebar */
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 155 85% 25%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 155 85% 15%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 100%; /* Bordi bianchi nella sidebar */
+    --sidebar-ring: 0 0% 100%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
@@ -142,5 +142,5 @@
 }
 
 .suggestion-highlight {
-  @apply bg-blue-200 hover:bg-blue-300 dark:hover:bg-blue-400/50 dark:text-blue-50 dark:bg-blue-500/40;
+  @apply bg-blue-200 hover:bg-blue-300 dark:bg-blue-500/40 dark:text-blue-50 dark:hover:bg-blue-400/50;
 }
