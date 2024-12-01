@@ -125,7 +125,7 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
         setInputValue={setInputValue}
         onSend={sendMessage}
         isLoading={isLoading}
-        onKeyDown={handleKeyDown} // Aggiungi la gestione dell'evento keyDown
+        //onKeyDown={handleKeyDown} // Aggiungi la gestione dell'evento keyDown
       />
     </div>
   );
