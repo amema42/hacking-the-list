@@ -1,21 +1,23 @@
 export async function POST(request: Request) {
-  const { id, message }: { id: string; message: string } = await request.json();
-
-  // Valori statici per latitudine e longitudine
-  const latitude = 41.9028; // Roma
-  const longitude = 12.4964; // Roma
+  const { id, message, latitude, longitude, userId }: { 
+    id: string; 
+    message: string; 
+    latitude: number; 
+    longitude: number; 
+    userId: string 
+  } = await request.json();
 
   const payload = {
     message,
     latitude,
     longitude,
+    userId, // Includi lo userId nel payload
   };
 
   try {
     // Chiamata al nuovo endpoint LLM
     const response = await fetch('https://mysterious-erika-liiist-cc9f939c.koyeb.app/message', {
       method: 'POST',
-      mode: 'no-cors', // Aggiungi questa riga
       headers: {
         'Content-Type': 'application/json',
       },
@@ -34,6 +36,44 @@ export async function POST(request: Request) {
     return new Response('Internal Server Error', { status: 500 });
   }
 }
+
+
+// export async function POST(request: Request) {
+//   const { id, message }: { id: string; message: string } = await request.json();
+
+//   // Valori statici per latitudine e longitudine
+//   const latitude = 41.9028; // Roma
+//   const longitude = 12.4964; // Roma
+
+//   const payload = {
+//     message,
+//     latitude,
+//     longitude,
+//   };
+
+//   try {
+//     // Chiamata al nuovo endpoint LLM
+//     const response = await fetch('https://mysterious-erika-liiist-cc9f939c.koyeb.app/message', {
+//       method: 'POST',
+//       mode: 'no-cors', // Aggiungi questa riga
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload),
+//     });
+
+//     if (!response.ok) {
+//       return new Response(`Error from LLM: ${response.statusText}`, { status: response.status });
+//     }
+
+//     const result = await response.text();
+
+//     return new Response(result, { status: 200 });
+//   } catch (error) {
+//     console.error('Error communicating with the LLM:', error);
+//     return new Response('Internal Server Error', { status: 500 });
+//   }
+// }
 
 
 
