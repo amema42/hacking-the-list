@@ -1,288 +1,55 @@
-// 'use client';
-
-// import type { Attachment, Message } from 'ai';
-// import { useChat } from 'ai/react';
-// import { AnimatePresence } from 'framer-motion';
-// import { useState } from 'react';
-// import useSWR, { useSWRConfig } from 'swr';
-// import { useWindowSize } from 'usehooks-ts';
-
-// import { ChatHeader } from '@/components/chat-header';
-// import { PreviewMessage, ThinkingMessage } from '@/components/message';
-// import { useScrollToBottom } from '@/components/use-scroll-to-bottom';
-// import type { Vote } from '@/lib/db/schema';
-// import { fetcher } from '@/lib/utils';
-
-// import { Block, type UIBlock } from './block';
-// import { BlockStreamHandler } from './block-stream-handler';
-// import { MultimodalInput } from './multimodal-input';
-// import { Overview } from './overview';
-
-// export function Chat({
-//   id,
-//   initialMessages,
-//   selectedModelId,
-// }: {
-//   id: string;
-//   initialMessages: Array<Message>;
-//   selectedModelId: string;
-// }) {
-//   const { mutate } = useSWRConfig();
-
-//   const {
-//     messages,
-//     setMessages,
-//     handleSubmit,
-//     input,
-//     setInput,
-//     append,
-//     isLoading,
-//     stop,
-//     data: streamingData,
-//   } = useChat({
-//     body: { id, modelId: selectedModelId },
-//     initialMessages,
-//     onFinish: () => {
-//       mutate('/api/history');
-//     },
-//   });
-
-//   const { width: windowWidth = 1920, height: windowHeight = 1080 } =
-//     useWindowSize();
-
-//   const [block, setBlock] = useState<UIBlock>({
-//     documentId: 'init',
-//     content: '',
-//     title: '',
-//     status: 'idle',
-//     isVisible: false,
-//     boundingBox: {
-//       top: windowHeight / 4,
-//       left: windowWidth / 4,
-//       width: 250,
-//       height: 50,
-//     },
-//   });
-
-//   const { data: votes } = useSWR<Array<Vote>>(
-//     `/api/vote?chatId=${id}`,
-//     fetcher,
-//   );
-
-//   const [messagesContainerRef, messagesEndRef] =
-//     useScrollToBottom<HTMLDivElement>();
-
-//   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
-
-//   return (
-//     <>
-//       <div className="flex flex-col min-w-0 h-dvh bg-background">
-//         <ChatHeader selectedModelId={selectedModelId} />
-//         <div
-//           ref={messagesContainerRef}
-//           className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
-//         >
-//           {messages.length === 0 && <Overview />}
-
-//           {messages.map((message, index) => (
-//             <PreviewMessage
-//               key={message.id}
-//               chatId={id}
-//               message={message}
-//               block={block}
-//               setBlock={setBlock}
-//               isLoading={isLoading && messages.length - 1 === index}
-//               vote={
-//                 votes
-//                   ? votes.find((vote) => vote.messageId === message.id)
-//                   : undefined
-//               }
-//             />
-//           ))}
-
-//           {isLoading &&
-//             messages.length > 0 &&
-//             messages[messages.length - 1].role === 'user' && (
-//               <ThinkingMessage />
-//             )}
-
-//           <div
-//             ref={messagesEndRef}
-//             className="shrink-0 min-w-[24px] min-h-[24px]"
-//           />
-//         </div>
-//         <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
-//           <MultimodalInput
-//             chatId={id}
-//             input={input}
-//             setInput={setInput}
-//             handleSubmit={handleSubmit}
-//             isLoading={isLoading}
-//             stop={stop}
-//             attachments={attachments}
-//             setAttachments={setAttachments}
-//             messages={messages}
-//             setMessages={setMessages}
-//             append={append}
-//           />
-//         </form>
-//       </div>
-
-//       <AnimatePresence>
-//         {block?.isVisible && (
-//           <Block
-//             chatId={id}
-//             input={input}
-//             setInput={setInput}
-//             handleSubmit={handleSubmit}
-//             isLoading={isLoading}
-//             stop={stop}
-//             attachments={attachments}
-//             setAttachments={setAttachments}
-//             append={append}
-//             block={block}
-//             setBlock={setBlock}
-//             messages={messages}
-//             setMessages={setMessages}
-//             votes={votes}
-//           />
-//         )}
-//       </AnimatePresence>
-
-//       <BlockStreamHandler streamingData={streamingData} setBlock={setBlock} />
-//     </>
-//   );
-// }
-
-
-
-
-// 'use client';
-
-// import { useState } from 'react';
-
-// export function Chat({ id, initialMessages }: { id: string; initialMessages: Array<any> }) {
-//   const [messages, setMessages] = useState(initialMessages);
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   // Funzione per inviare messaggi al backend
-//   const sendMessage = async (messageContent: string) => {
-//     const latitude = "41.9028"; // Latitudine statica (es. Roma)
-//     const longitude = "12.4964"; // Longitudine statica
-
-//     const newMessage = {
-//       id: `${Date.now()}`, // Genera un ID univoco per il messaggio
-//       content: messageContent,
-//       role: 'user', // Ruolo del mittente
-//     };
-
-//     // Aggiungi il messaggio dell'utente allo stato
-//     setMessages((prev) => [...prev, newMessage]);
-//     setIsLoading(true);
-
-//     try {
-//       // Chiamata al tuo endpoint
-
-//       const response = await fetch('https://mysterious-erika-liiist-cc9f939c.koyeb.app/message', {
-//         method: 'POST',
-//         // mode: 'no-cors', // Aggiungi questa riga
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ message: messageContent, latitude: "41.9028", longitude: "12.4964" }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Errore nella risposta dal backend');
-//       }
-
-//       const replyContent = await response.text();
-
-//       // Aggiungi la risposta al flusso di messaggi
-//       const replyMessage = {
-//         id: `${Date.now() + 1}`,
-//         content: replyContent,
-//         role: 'assistant', // Ruolo del modello
-//       };
-
-//       setMessages((prev) => [...prev, replyMessage]);
-//     } catch (error) {
-//       console.error('Errore durante l\'invio del messaggio:', error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="chat-container">
-//       <div className="messages">
-//         {messages.map((message) => (
-//           <div key={message.id} className={`message ${message.role}`}>
-//             {message.content}
-//           </div>
-//         ))}
-//         {isLoading && <div className="message assistant">Scrivendo...</div>}
-//       </div>
-//       <div className="input-bar">
-//         <input
-//           type="text"
-//           placeholder="Scrivi un messaggio..."
-//           onKeyDown={(e) => {
-//             if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-//               sendMessage(e.currentTarget.value.trim());
-//               e.currentTarget.value = ''; // Pulisce l'input
-//             }
-//           }}
-//         />
-//       </div>
-//     </div>
-//   );
-// }
-
 'use client';
 
 import { useState, useEffect } from 'react';
+import { ChatHeader } from '@/components/chat-header'; // Intestazione della chat
+import { PreviewMessage } from '@/components/message'; // Import del componente per i messaggi
+import { MultimodalInput } from '@/components/multimodal-input'; // Input per l'utente
+import { useScrollToBottom } from '@/components/use-scroll-to-bottom'; // Auto scroll
 
 export function Chat({ id, initialMessages }: { id: string; initialMessages: Array<any> }) {
   const [messages, setMessages] = useState(initialMessages);
   const [isLoading, setIsLoading] = useState(false);
-  const [userId, setUserId] = useState<string | null>(null); // Stato per lo userId
+  const [inputValue, setInputValue] = useState('');
+  const [userId, setUserId] = useState<string | null>(null);
 
-  // Genera un userId unico all'inizio della sessione
+  // Genera e salva userId unico per la sessione utente
   useEffect(() => {
     const storedUserId = localStorage.getItem('chatUserId');
-    if (storedUserId) {
-      setUserId(storedUserId); // Usa lo userId esistente se disponibile
-    } else {
+    if (!storedUserId) {
       const newUserId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
-      setUserId(newUserId); // Genera un nuovo userId
-      localStorage.setItem('chatUserId', newUserId); // Salva lo userId nel localStorage
+      localStorage.setItem('chatUserId', newUserId);
+      setUserId(newUserId);
+    } else {
+      setUserId(storedUserId);
     }
   }, []);
 
-  // Funzione per inviare messaggi al backend
-  const sendMessage = async (messageContent: string) => {
-    const latitude = "41.9028"; // Latitudine statica (es. Roma)
-    const longitude = "12.4964"; // Longitudine statica
+  // Funzione per inviare messaggi
+  const sendMessage = async () => {
+    if (!inputValue.trim() || !userId) return;
 
     const newMessage = {
-      id: `${Date.now()}`, // Genera un ID univoco per il messaggio
-      content: messageContent,
-      role: 'user', // Ruolo del mittente
+      id: `${Date.now()}`,
+      content: inputValue.trim(),
+      role: 'user',
     };
 
-    // Aggiungi il messaggio dell'utente allo stato
+    // Aggiunge il messaggio dell'utente
     setMessages((prev) => [...prev, newMessage]);
+    setInputValue(''); // Pulisce l'input
     setIsLoading(true);
 
     try {
-      // Chiamata al tuo endpoint
-      const response = await fetch('https://mysterious-erika-liiist-cc9f939c.koyeb.app/message', {
+      // Chiamata al tuo endpoint per ottenere la risposta dell'assistente
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: messageContent,
-          latitude: latitude,
-          longitude: longitude,
-          userId: userId, // Includi lo userId nella richiesta
+          id,
+          message: newMessage.content,
+          latitude: 41.7681013, // Static: Tivoli, Roma
+          longitude: 12.3224347, // Static: Tivoli, Roma
+          userId,
         }),
       });
 
@@ -290,15 +57,16 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
         throw new Error('Errore nella risposta dal backend');
       }
 
-      const replyContent = await response.text();
+      // Parsing della risposta come JSON
+      const replyJson = await response.json();
+      const replyContent = replyJson.message; // Assumendo che il messaggio sia nella proprietà "message"
 
-      // Aggiungi la risposta al flusso di messaggi
+      // Aggiunge il messaggio dell'assistente alla chat
       const replyMessage = {
         id: `${Date.now() + 1}`,
         content: replyContent,
-        role: 'assistant', // Ruolo del modello
+        role: 'assistant',
       };
-
       setMessages((prev) => [...prev, replyMessage]);
     } catch (error) {
       console.error('Errore durante l\'invio del messaggio:', error);
@@ -307,28 +75,72 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
     }
   };
 
+  // Gestione dell'invio del messaggio tramite tasto Enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && inputValue.trim()) {
+      e.preventDefault(); // Previene il comportamento predefinito di Enter
+      sendMessage();
+    }
+  };
+
+  // Scrolla automaticamente alla fine dei messaggi ogni volta che `messages` cambia
+  useScrollToBottom(messages);
+
   return (
-    <div className="chat-container">
-      <div className="messages">
+    <div
+      className="chat-container flex flex-col h-screen"
+      style={{ backgroundColor: 'var(--background-color)', transition: 'background-color 0.3s' }} // Colore dinamico per light/dark mode
+    >
+      {/* Intestazione della chat */}
+      <ChatHeader />
+
+      {/* Area dei messaggi */}
+      <div className="messages flex-1 overflow-y-auto p-4 space-y-4" style={{ backgroundColor: 'var(--background-color)', transition: 'background-color 0.3s' }}>
         {messages.map((message) => (
-          <div key={message.id} className={`message ${message.role}`}>
-            {message.content}
-          </div>
+          <PreviewMessage
+            key={message.id}
+            chatId={id}
+            message={message}
+            //block={null} // Passiamo `null` se non usiamo blocchi per questo esempio
+            setBlock={() => {}} // Funzione vuota per setBlock se non viene usata
+            isLoading={false}
+            vote={undefined}
+          />
         ))}
-        {isLoading && <div className="message assistant">Scrivendo...</div>}
+        {isLoading && (
+          <PreviewMessage
+            chatId={id}
+            message={{ role: 'assistant', content: 'Scrivendo...' }}
+            block={null}
+            setBlock={() => {}}
+            isLoading={true}
+            vote={undefined}
+          />
+        )}
       </div>
-      <div className="input-bar">
-        <input
-          type="text"
-          placeholder="Scrivi un messaggio..."
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-              sendMessage(e.currentTarget.value.trim());
-              e.currentTarget.value = ''; // Pulisce l'input
-            }
-          }}
-        />
-      </div>
+
+      {/* Barra di input per inviare messaggi */}
+      <MultimodalInput
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        onSend={sendMessage}
+        isLoading={isLoading}
+        onKeyDown={handleKeyDown} // Aggiungi la gestione dell'evento keyDown
+      />
     </div>
   );
 }
+
+// Aggiungi le variabili CSS per supportare light/dark mode
+const root = document.documentElement;
+root.style.setProperty('--background-color', 'hsl(0, 0%, 100%)'); // Imposta il colore di sfondo per la modalità light
+root.style.setProperty('--background-color-dark', 'hsl(155, 85%, 10%)'); // Imposta il colore di sfondo per la modalità dark
+
+// Aggiungi un listener per cambiare il tema dinamicamente
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (e.matches) {
+    root.style.setProperty('--background-color', root.style.getPropertyValue('--background-color-dark'));
+  } else {
+    root.style.setProperty('--background-color', 'hsl(0, 0%, 100%)');
+  }
+});

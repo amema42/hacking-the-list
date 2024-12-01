@@ -144,3 +144,10 @@
 .suggestion-highlight {
   @apply bg-blue-200 hover:bg-blue-300 dark:bg-blue-500/40 dark:text-blue-50 dark:hover:bg-blue-400/50;
 }
+.bg-dark-green {
+  background-color: hsl(155, 85%, 10%);
+}
+
+.bg-light-green {
+  background-color: hsl(155, 85%, 15%);
+}

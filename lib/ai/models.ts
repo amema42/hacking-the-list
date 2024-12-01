@@ -9,16 +9,16 @@ export interface Model {
 
 export const models: Array<Model> = [
   {
-    id: 'gpt-4o-mini',
-    label: 'GPT 4o mini',
-    apiIdentifier: 'gpt-4o-mini',
-    description: 'Small model for fast, lightweight tasks',
+    id: '(beta) liiist: llama agent model',
+    label: '(beta) liiist: llama agent model',
+    apiIdentifier: 'liiist: llama agent model',
+    description: 'Work in progress',
   },
   {
-    id: 'gpt-4o',
-    label: 'GPT 4o',
-    apiIdentifier: 'gpt-4o',
-    description: 'For complex, multi-step tasks',
+    id: 'liiist: gpt4 v0.1',
+    label: 'liiist: gpt4 v0.1',
+    apiIdentifier: 'liiist: gpt v0.1',
+    description: 'Work in progress',
   },
 ] as const;
 

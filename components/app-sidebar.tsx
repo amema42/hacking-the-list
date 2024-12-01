@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/ui/tooltip';
 import Link from 'next/link';
+import { TrashIcon } from 'lucide-react';
 
 export function AppSidebar({ user }: { user: User | undefined }) {
   const router = useRouter();
@@ -40,7 +41,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                 Chatbot
               </span>
             </Link>
-            <BetterTooltip content="New Chat" align="start">
+            <BetterTooltip content="Clean Chat" align="start">
               <Button
                 variant="ghost"
                 type="button"
@@ -51,7 +52,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                   router.refresh();
                 }}
               >
-                <PlusIcon />
+                <TrashIcon />
               </Button>
             </BetterTooltip>
           </div>
