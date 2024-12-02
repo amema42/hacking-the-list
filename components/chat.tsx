@@ -11,19 +11,14 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false); // Stato per verificare l'idratazione
 
-  // Genera e salva userId unico per la sessione utente
+  // Genera un nuovo userId lato client dopo l'idratazione
   useEffect(() => {
-    const storedUserId = sessionStorage.getItem('chatUserId');
-    if (!storedUserId) {
-      const newUserId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
-      sessionStorage.setItem('chatUserId', newUserId);
-      setUserId(newUserId);
-      console.log('Generato nuovo userId:', newUserId);
-    } else {
-      setUserId(storedUserId);
-      console.log('Recuperato userId esistente:', storedUserId);
-    }
+    setIsHydrated(true); // Indica che l'idratazione è completata
+    const newUserId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+    setUserId(newUserId);
+    console.log('Generato nuovo userId:', newUserId);
   }, []);
 
   // Funzione per inviare messaggi
@@ -36,13 +31,11 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
       role: 'user',
     };
 
-    // Aggiunge il messaggio dell'utente
     setMessages((prev) => [...prev, newMessage]);
-    setInputValue(''); // Pulisce l'input
+    setInputValue('');
     setIsLoading(true);
 
     try {
-      // Chiamata al tuo endpoint per ottenere la risposta dell'assistente
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,7 +55,6 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
       const replyJson = await response.json();
       const replyContent = replyJson.message;
 
-      // Aggiunge il messaggio dell'assistente alla chat
       const replyMessage = {
         id: `${Date.now() + 1}`,
         content: replyContent,
@@ -75,14 +67,17 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
       setIsLoading(false);
     }
   };
-  console.log('User ID attuale:', userId);
 
-  // Scrolla automaticamente alla fine dei messaggi ogni volta che `messages` cambia
   useScrollToBottom(messages);
+
+  if (!isHydrated) {
+    return <div>Loading...</div>; // Placeholder fino a quando l'idratazione è completata
+  }
 
   return (
     <div className="chat-container flex flex-col h-screen">
-      <ChatHeader />
+      {/* Passa userId come prop al ChatHeader */}
+      <ChatHeader selectedModelId={id} userId={userId} />
       <div className="messages flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <PreviewMessage key={message.id} chatId={id} message={message} />
