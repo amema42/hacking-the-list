@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,  // Ignora ESLint durante la build
   },
+  images: {
+    domains: ['avatar.vercel.sh'],
+  },
   typescript: {
     ignoreBuildErrors: true,  // Ignora gli errori di tipo durante la build
   },
