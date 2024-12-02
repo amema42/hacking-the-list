@@ -1,27 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { ChatHeader } from '@/components/chat-header'; // Intestazione della chat
-import { PreviewMessage } from '@/components/message'; // Import del componente per i messaggi
-import { MultimodalInput } from '@/components/multimodal-input'; // Input per l'utente
-import { useScrollToBottom } from '@/components/use-scroll-to-bottom'; // Auto scroll
+import { useState, useEffect, useRef } from 'react';
+import { ChatHeader } from '@/components/chat-header';
+import { PreviewMessage } from '@/components/message';
+import { MultimodalInput } from '@/components/multimodal-input';
 
 export function Chat({ id, initialMessages }: { id: string; initialMessages: Array<any> }) {
   const [messages, setMessages] = useState(initialMessages);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [userId, setUserId] = useState<string | null>(null);
-  const [isHydrated, setIsHydrated] = useState(false); // Stato per verificare l'idratazione
+  const [isHydrated, setIsHydrated] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Genera un nuovo userId lato client dopo l'idratazione
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
-    setIsHydrated(true); // Indica che l'idratazione è completata
+    setIsHydrated(true);
     const newUserId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
     setUserId(newUserId);
     console.log('Generato nuovo userId:', newUserId);
   }, []);
 
-  // Funzione per inviare messaggi
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const sendMessage = async () => {
     if (!inputValue.trim() || !userId) return;
 
@@ -42,8 +48,8 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
         body: JSON.stringify({
           id,
           message: newMessage.content,
-          latitude: 41.7681013, // Static: Tivoli, Roma
-          longitude: 12.3224347, // Static: Tivoli, Roma
+          latitude: 41.7681013,
+          longitude: 12.3224347,
           userId,
         }),
       });
@@ -63,30 +69,45 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
       setMessages((prev) => [...prev, replyMessage]);
     } catch (error) {
       console.error('Errore durante l\'invio del messaggio:', error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now() + 1}`,
+          content: 'Errore nell\'invio del messaggio. Riprova più tardi.',
+          role: 'assistant',
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useScrollToBottom(messages);
-
   if (!isHydrated) {
-    return <div>loading...</div>; // Placeholder fino a quando l'idratazione è completata
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-white">Loading chat...</p>
+      </div>
+    );
   }
 
   return (
     <div className="chat-container flex flex-col h-screen">
-      {/* Passa userId come prop al ChatHeader */}
       <ChatHeader selectedModelId={id} userId={userId} />
-      <div className="messages flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="messages flex-1 overflow-y-auto p-2 space-y-2"> {/* Ridotto padding */}
         {messages.map((message) => (
           <PreviewMessage key={message.id} chatId={id} message={message} />
         ))}
-        {isLoading && (
-          <PreviewMessage chatId={id} message={{ role: 'assistant', content: 'Writing...' }} isLoading={true} />
-        )}
+        <div ref={messagesEndRef} />
       </div>
-      <MultimodalInput inputValue={inputValue} setInputValue={setInputValue} onSend={sendMessage} isLoading={isLoading} />
+      <div className="h-20" /> {/* Aggiunge uno spazio extra di 10 unità (tailwind h-10) */}
+      <div className="input-bar flex items-center p-3 bg-[hsl(155,85%,10%)]"> {/* Regola padding */}
+        <MultimodalInput
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          onSend={sendMessage}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 }

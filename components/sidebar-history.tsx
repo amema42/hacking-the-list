@@ -176,7 +176,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
         <SidebarGroupContent>
           <div className="text-yellow-50 w-full flex flex-row justify-center items-center text-sm gap-2">
             <div>
-              History conversations not available! 🦙 😔
+              History conversations not available! 😔
             </div>
           </div>
         </SidebarGroupContent>
