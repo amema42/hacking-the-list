@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/sidebar';
 
 export function SidebarUserNav({ user }: { user: User }) {
-  const { setTheme, theme } = useTheme();
+  //const { setTheme, theme } = useTheme();
 
   return (
     <SidebarMenu>
@@ -42,12 +42,12 @@ export function SidebarUserNav({ user }: { user: User }) {
             side="top"
             className="w-[--radix-popper-anchor-width]"
           >
-            <DropdownMenuItem
+            {/* <DropdownMenuItem
               className="cursor-pointer"
               onSelect={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             >
               {`Toggle ${theme === 'light' ? 'dark' : 'light'} mode`}
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <button
