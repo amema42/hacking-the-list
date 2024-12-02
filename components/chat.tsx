@@ -71,7 +71,7 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
   useScrollToBottom(messages);
 
   if (!isHydrated) {
-    return <div>Loading...</div>; // Placeholder fino a quando l'idratazione è completata
+    return <div>loading...</div>; // Placeholder fino a quando l'idratazione è completata
   }
 
   return (
@@ -83,7 +83,7 @@ export function Chat({ id, initialMessages }: { id: string; initialMessages: Arr
           <PreviewMessage key={message.id} chatId={id} message={message} />
         ))}
         {isLoading && (
-          <PreviewMessage chatId={id} message={{ role: 'assistant', content: 'Scrivendo...' }} isLoading={true} />
+          <PreviewMessage chatId={id} message={{ role: 'assistant', content: 'Writing...' }} isLoading={true} />
         )}
       </div>
       <MultimodalInput inputValue={inputValue} setInputValue={setInputValue} onSend={sendMessage} isLoading={isLoading} />

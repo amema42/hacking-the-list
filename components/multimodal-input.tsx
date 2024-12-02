@@ -15,7 +15,7 @@ export function MultimodalInput({
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        placeholder="Scrivi un messaggio..."
+        placeholder="Ask me about grocery products, stores, recipes 🥳🫂..."
         className="flex-auto p-3 border-2 border-transparent rounded-3xl focus:outline-none focus:border-white-500 bg-[hsl(155,85%,15%)] text-white placeholder-gray-300"
         disabled={isLoading}
       />
@@ -26,7 +26,7 @@ export function MultimodalInput({
           isLoading ? 'bg-blue-600 opacity-50 cursor-not-allowed' : 'bg-green-700 hover:bg-green-600'
         }`}
       >
-        Enter
+        enter
       </button>
     </div>
   );

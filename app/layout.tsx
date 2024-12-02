@@ -6,9 +6,9 @@ import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'liiist Chat',
-  description: 'liiist',
+  metadataBase: new URL('https://hacking-the-list.vercel.app/'),
+  title: 'liiist - chatbot (beta) ',
+  description: 'liiist chatbot (beta) - powered by llama 3.1',
 };
 
 export const viewport = {

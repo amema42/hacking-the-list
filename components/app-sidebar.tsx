@@ -27,6 +27,17 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 
   return (
     <Sidebar className="group-data-[side=left]:border-r-0">
+      <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap');
+
+        .funnel-display {
+          font-family: 'Funnel Display', serif;
+          font-optical-sizing: auto;
+          font-weight: 800; /* Adjust the weight as needed */
+          font-style: normal;
+          font-size: 1.5rem; /* Adjust the size as needed */
+        }
+      `}</style>
       <SidebarHeader>
         <SidebarMenu>
           <div className="flex flex-row justify-between items-center">
@@ -37,11 +48,11 @@ export function AppSidebar({ user }: { user: User | undefined }) {
               }}
               className="flex flex-row gap-3 items-center"
             >
-              <span className="text-lg font-semibold px-2 hover:bg-muted rounded-md cursor-pointer">
-                (beta) liiist
+              <span className="funnel-display px-2 hover:bg-muted rounded-md cursor-pointer">
+                chatbot - liiist
               </span>
             </Link>
-            <BetterTooltip content="Clean Chat" align="start">
+            <BetterTooltip content="clean chat" align="start">
               <Button
                 variant="ghost"
                 type="button"
@@ -67,6 +78,17 @@ export function AppSidebar({ user }: { user: User | undefined }) {
         {user && (
           <SidebarGroup>
             <SidebarGroupContent>
+              {/* Contact Us Button */}
+              <div className="px py-2">
+                <Link
+                  href="mailto:ani.mema@proton.me"
+                  className="block w-full text-center border border-white text-white bg-transparent rounded-md py-2 hover:bg-white hover:text-black transition-all"
+                  onClick={() => setOpenMobile(false)}
+                >
+                  Contact Us
+                </Link>
+              </div>
+              {/* User Account Info */}
               <SidebarUserNav user={user} />
             </SidebarGroupContent>
           </SidebarGroup>
